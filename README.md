@@ -1,2 +1,2 @@
 # azure-samples
-Samples for Microsoft Azure
+Samples for Microsoft Azure.
