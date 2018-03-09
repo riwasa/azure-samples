@@ -1,0 +1,51 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmDiagnosticsStorageAccountName": {
+      "value": "rimsimplevm"
+    },
+    "publicIPAddressName": {
+      "value": "simple-vm-pip"
+    },
+    "domainNameLabelPrefix": {
+      "value": "rim-simple-vm125"
+    },
+    "vnetName": {
+      "value": "simple-vm-vnet"
+    },
+    "vnetAddressPrefix": {
+      "value": "10.0.0.0/27"
+    },
+    "vnetSubnetName": {
+      "value": "simple-vm-default"
+    },
+    "vnetSubnetAddressPrefix": {
+      "value": "10.0.0.0/27"
+    },
+    "nsgName": {
+      "value": "simple-vm-nsg"
+    },
+    "nicName": {
+      "value": "simple-vm-nic"
+    },
+    "vmSize": {
+      "value": "Standard_D2_v2"
+    },
+    "platform": {
+      "value": "windows"
+    },
+    "vmName": {
+      "value": "simple-vm-vm"
+    },
+    "computerName": {
+      "value": "SimpleVM"
+    },
+    "adminUsername": {
+      "value": "rimadmin"
+    },
+    "adminPassword": {
+      "value": "Aremai2569!!"
+    }
+  }
+}
