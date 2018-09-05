@@ -1,0 +1,77 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "cacheName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Redis cache."
+      }
+    },
+    "skuName": {
+      "type": "string",
+      "defaultValue": "Standard",
+      "allowedValues": [
+        "Basic",
+        "Standard",
+        "Premium"
+      ],
+      "metadata": {
+        "description": "Type of the Redis cache."
+      }
+    },
+    "skuCapacity": {
+      "type": "int",
+      "defaultValue": 1,
+      "allowedValues": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "metadata": {
+        "description": "Capacity of the Redis cache. 0 - 6 for Basic and Standard; 1 - 4 for Premium."
+      }
+    },
+    "enableNonSslPort": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Value indicating whether to allow access via non-SSL ports."
+      }
+    }
+  },
+  "variables": {
+    "skuFamily": "[if(equals(parameters('skuName'), 'Premium'), 'P', 'C')]"
+  },
+  "resources": [
+    {
+      "comments": "Create the Redis cache.",
+      "type": "Microsoft.Cache/redis",
+      "apiVersion": "2017-10-01",
+      "location": "[resourceGroup().location]",
+      "name": "[parameters('cacheName')]",
+      "properties": {
+        "enableNonSslPort": "[parameters('enableNonSslPort')]",
+        "sku": {
+          "name": "[parameters('skuName')]",
+          "family": "[variables('skuFamily')]",
+          "capacity": "[parameters('skuCapacity')]"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "rediskey1": {
+      "type": "string",
+      "value": "[listkeys(resourceId('Microsoft.Cache/redis', parameters('cacheName')), '2017-10-01').primaryKey]"
+    },
+    "rediskey2": {
+      "type": "string",
+      "value": "[listkeys(resourceId('Microsoft.Cache/redis', parameters('cacheName')), '2017-10-01').secondaryKey]"
+    }
+  }
+}

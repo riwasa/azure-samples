@@ -1,0 +1,147 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "namespaceName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Event Hub Namespace."
+      }
+    },
+    "throughputUnits": {
+      "type": "int",
+      "defaultValue": 1,
+      "metadata": {
+        "description": "Number of Throughput Units"
+      }
+    },
+    "namespaceSku": {
+      "type": "string",
+      "allowedValues": [
+        "Basic",
+        "Standard"
+      ],
+      "defaultValue": "Basic",
+      "metadata": {
+        "description": "Name/Tier of the Event Hub Namespace."
+      }
+    },
+    "enableAutoInflate": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Value indicating whether to automatically scale the Throughput Units."
+      }
+    },
+    "autoInflateMaximumThroughputUnits": {
+      "type": "int",
+      "defaultValue": 2,
+      "metadata": {
+        "description": "Maximum number of Throughput Units to automatically scale to."
+      }
+    },
+    "eventHubName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Event Hub."
+      }
+    },
+    "partitionCount": {
+      "type": "int",
+      "allowedValues": [
+        2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+      ],
+      "defaultValue": 2,
+      "metadata": {
+        "description": "Number of partitions in the Event Hub."
+      }
+    },
+    "messageRetention": {
+      "type": "int",
+      "allowedValues": [
+        1, 2, 3, 4, 5, 6, 7
+      ],
+      "defaultValue": 1,
+      "metadata": {
+        "description": "Number of days to retain messages."
+      }
+    },
+    "createConsumerGroup": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Value indicating whether a consumer group should be created in the Event Hub."
+      }
+    },
+    "consumerGroupName": {
+      "type": "string",
+      "defaultValue": "DoNotCreateConsumerGroup",
+      "metadata": {
+        "description": "Name of the Consumer Group."
+      }
+    }
+  },
+  "variables": {
+    "isBasic": "[equals(parameters('namespaceSku'), 'Basic')]",
+    "fullEventHubName": "[concat(parameters('namespaceName'), '/', parameters('eventHubName'))]",
+    "fullConsumerGroupName": "[concat(variables('fullEventHubName'), '/', parameters('consumerGroupName'))]",
+    "defaultSASKeyName": "RootManageSharedAccessKey",
+    "authRuleResourceId": "[resourceId('Microsoft.EventHub/namespaces/authorizationRules', parameters('namespaceName'), variables('defaultSASKeyName'))]"
+  },
+  "resources": [
+    {
+      "comments": "Creates the Event Hub Namespace.",
+      "type": "Microsoft.EventHub/namespaces",
+      "apiVersion": "2017-04-01",
+      "name": "[parameters('namespaceName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "capacity": "[parameters('throughputUnits')]",
+        "name":  "[parameters('namespaceSku')]",
+        "tier": "[parameters('namespaceSku')]"
+      },
+      "properties": {
+        "isAutoInflateEnabled": "[if(variables('isBasic'), json('false'), parameters('enableAutoInflate'))]",
+        "maximumThroughputUnits": "[if(variables('isBasic'), json('null'), parameters('autoInflateMaximumThroughputUnits'))]"
+      }
+    },
+    {
+      "comments": "Creates the Event Hub.",
+      "type": "Microsoft.EventHub/namespaces/eventhubs",
+      "apiVersion": "2017-04-01",
+      "name": "[variables('fullEventHubName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaceName'))]"
+      ],
+      "properties": {
+        "messageRetentionInDays": "[parameters('messageRetention')]",
+        "partitionCount": "[parameters('partitionCount')]"
+      }
+    },
+    {
+      "condition": "[equals(parameters('createConsumerGroup'), json('true'))]",
+      "comments": "Creates the Consumer Group.",
+      "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+      "apiVersion": "2017-04-01",
+      "name": "[variables('fullConsumerGroupName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaceName'), parameters('eventHubName'))]"
+      ],
+      "properties": {
+        "userMetadata": ""
+      }
+    }
+  ],
+  "outputs": {
+    "NamespaceConnectionString": {
+      "type": "string",
+      "value": "[listkeys(variables('authRuleResourceId'), '2017-04-01').primaryConnectionString]"
+    },
+    "SharedAccessPolicyPrimaryKey": {
+      "type": "string",
+      "value": "[listkeys(variables('authRuleResourceId'), '2017-04-01').primaryKey]"
+    }
+  }
+}

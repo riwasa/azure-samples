@@ -1,0 +1,18 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vnetName": {
+      "value": "demo-redis-vnet"
+    },
+    "redisSubnetName": {
+      "value": "demo-redis-vnet-app"
+    },
+    "redisSubnetAddressPrefix": {
+      "value": "10.0.0.32/27"
+    },
+    "nsgName": {
+      "value": "demo-redis-vnet-app-nsg"
+    }
+  }
+}

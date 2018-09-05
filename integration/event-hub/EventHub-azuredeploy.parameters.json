@@ -1,0 +1,33 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "namespaceName": {
+      "value": "rim-core-activitylogexport-ns"
+    },
+    "throughputUnits": {
+      "value": 2
+    },
+    "namespaceSku": {
+      "value": "Standard"
+    },
+    "enableAutoInflate": {
+      "value": true
+    },
+    "autoInflateMaximumThroughputUnits": {
+      "value": 4
+    },
+    "eventHubName": {
+      "value": "rim-core-ActivityLogExport-eh"
+    },
+    "partitionCount": {
+      "value": 3
+    },
+    "messageRetention": {
+      "value": 2
+    },
+    "createConsumerGroup": {
+      "value": false
+    }
+  }
+}
