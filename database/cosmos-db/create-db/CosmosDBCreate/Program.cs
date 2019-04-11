@@ -11,7 +11,7 @@ namespace CosmosDBCreate
         public static void Main(string[] args)
         {
             string endpointUrl = "https://rim-demo-cosmosdb-cosmos.documents.azure.com:443/";
-            string authorizationKey = "PwfHnRCSwtA01vA5k7enSWQoDaNJX173uFb3HJHuZAw4RztZzrBVaDMiZfevVoAhpTQcwZnvnSInLQj0mVOrdQ==";
+            string authorizationKey = "";
 
             ProcessAsync(endpointUrl, authorizationKey).GetAwaiter().GetResult();
 
