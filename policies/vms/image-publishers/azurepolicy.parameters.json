@@ -1,0 +1,9 @@
+{
+  "listOfAllowedImagePublishers": {
+     "type": "Array",
+     "metadata": {
+      "displayName": "Allowed image publishers",
+      "description": "The list of publishers that are allowed."
+     }
+  }
+}

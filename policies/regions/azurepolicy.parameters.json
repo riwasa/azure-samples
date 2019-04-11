@@ -1,0 +1,9 @@
+{
+  "listOfAllowedLocations": {
+    "type": "Array",
+    "metadata": {
+      "displayName": "Allowed Azure Regions",
+      "description": "The list of allowed Azure Regions."
+    }
+  }
+}
