@@ -1,0 +1,74 @@
+{
+  "$schema": "https://rimcorearm.blob.core.windows.net/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Virtual Network."
+      }
+    },
+    "vnetAddressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Address Prefix for the Virtual Network."
+      }
+    },
+    "vnetSubnet1Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the first Virtual Network Subnet."
+      }
+    },
+    "vnetSubnet1AddressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Address Prefix for the first Virtual Network Subnet."
+      }
+    },
+    "vnetSubnet2Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the second Virtual Network Subnet."
+      }
+    },
+    "vnetSubnet2AddressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Address Prefix for the second Virtual Network Subnet."
+      }
+    }
+  },
+  "resources": [
+    {
+      "comments": "Create a Virtual Network.",
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2017-06-01",
+      "name": "[parameters('vnetName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('vnetAddressPrefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[parameters('vnetSubnet1Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('vnetSubnet1AddressPrefix')]"
+            }
+          },
+          {
+            "name": "[parameters('vnetSubnet2Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('vnetSubnet2AddressPrefix')]"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": {
+  }
+}

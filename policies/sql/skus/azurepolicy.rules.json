@@ -1,0 +1,17 @@
+{
+  "if": {
+    "allof": [
+      {
+        "field": "type",
+        "equals": "Microsoft.Sql/servers/databases"
+      },
+      {
+        "field": "Microsoft.Sql/servers/databases/sku.tier",
+        "equals": "Hyperscale"
+      }
+    ]
+  },
+  "then": {
+    "effect": "Deny"
+  }
+}

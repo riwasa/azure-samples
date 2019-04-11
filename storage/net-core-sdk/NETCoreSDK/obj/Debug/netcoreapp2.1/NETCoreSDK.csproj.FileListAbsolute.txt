@@ -1,0 +1,11 @@
+C:\Users\riwasa\Documents\Dev\azure-samples\storage\net-core-sdk\NETCoreSDK\bin\Debug\netcoreapp2.1\NETCoreSDK.deps.json
+C:\Users\riwasa\Documents\Dev\azure-samples\storage\net-core-sdk\NETCoreSDK\bin\Debug\netcoreapp2.1\NETCoreSDK.runtimeconfig.json
+C:\Users\riwasa\Documents\Dev\azure-samples\storage\net-core-sdk\NETCoreSDK\bin\Debug\netcoreapp2.1\NETCoreSDK.runtimeconfig.dev.json
+C:\Users\riwasa\Documents\Dev\azure-samples\storage\net-core-sdk\NETCoreSDK\bin\Debug\netcoreapp2.1\NETCoreSDK.dll
+C:\Users\riwasa\Documents\Dev\azure-samples\storage\net-core-sdk\NETCoreSDK\bin\Debug\netcoreapp2.1\NETCoreSDK.pdb
+C:\Users\riwasa\Documents\Dev\azure-samples\storage\net-core-sdk\NETCoreSDK\obj\Debug\netcoreapp2.1\NETCoreSDK.csprojAssemblyReference.cache
+C:\Users\riwasa\Documents\Dev\azure-samples\storage\net-core-sdk\NETCoreSDK\obj\Debug\netcoreapp2.1\NETCoreSDK.csproj.CoreCompileInputs.cache
+C:\Users\riwasa\Documents\Dev\azure-samples\storage\net-core-sdk\NETCoreSDK\obj\Debug\netcoreapp2.1\NETCoreSDK.AssemblyInfoInputs.cache
+C:\Users\riwasa\Documents\Dev\azure-samples\storage\net-core-sdk\NETCoreSDK\obj\Debug\netcoreapp2.1\NETCoreSDK.AssemblyInfo.cs
+C:\Users\riwasa\Documents\Dev\azure-samples\storage\net-core-sdk\NETCoreSDK\obj\Debug\netcoreapp2.1\NETCoreSDK.dll
+C:\Users\riwasa\Documents\Dev\azure-samples\storage\net-core-sdk\NETCoreSDK\obj\Debug\netcoreapp2.1\NETCoreSDK.pdb

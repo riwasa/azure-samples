@@ -1,0 +1,27 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmssName": {
+      "value": "vmss-demo-vmss"
+    },
+    "dnsNamePrefix": {
+      "value": "rimvmssdemo2"
+    },
+    "vmSize": {
+      "value": "Standard_D2_v2"
+    },
+    "instanceCount": {
+      "value": 3
+    },
+    "adminUsername": {
+      "value": "rimadmin"
+    },
+    "adminPassword": {
+      "value": "Aremai2569!!"
+    },
+    "imageId": {
+      "value": "/subscriptions/55eb90af-e6e7-4061-baf0-cf30e260a0b7/resourceGroups/BB-MD/providers/Microsoft.Compute/images/SourcePS2Image"
+    }
+  }
+}

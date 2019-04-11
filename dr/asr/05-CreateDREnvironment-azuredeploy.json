@@ -1,0 +1,115 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "workloadName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the workload"
+      }
+    },
+    "vnetAddressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Address Prefix for the Virtual Network"
+      }
+    },
+    "vnetSubnetSuffix": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Virtual Network Subnet"
+      }
+    },
+    "vnetSubnetAddressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Address Prefix for the Virtual Network Subnet"
+      }
+    }
+  },
+  "variables": {
+    "resourcePrefix": "[concat(toLower(resourceGroup().name), '-', toLower(parameters('workloadName')))]",
+    "publicIPAddressName": "[concat(variables('resourcePrefix'), '-pip')]",
+    "domainNameLabelPrefix": "[concat('rim-', variables('resourcePrefix'))]",
+    "vnetName": "[concat(toLower(resourceGroup().name), '-vnet')]",
+    "vnetSubnetName": "[concat(variables('vnetName'), '-', parameters('vnetSubnetSuffix'))]",
+    "nsgName": "[concat(variables('resourcePrefix'), '-nsg')]"
+  },
+  "resources": [
+    {
+      "comments": "Create a Public IP Address",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2018-11-01",
+      "name": "[variables('publicIPAddressName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[variables('domainNameLabelPrefix')]"
+        }
+      }
+    },
+    {
+      "comments": "Create a Virtual Network",
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2018-11-01",
+      "name": "[variables('vnetName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('vnetAddressPrefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('vnetSubnetName')]",
+            "properties": {
+              "addressPrefix": "[parameters('vnetSubnetAddressPrefix')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "comments": "Create a Network Security Group",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2018-11-01",
+      "name": "[variables('nsgName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "AllowRDPInBound",
+            "properties": {
+              "priority": 1000,
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "3389",
+              "protocol": "Tcp",
+              "access": "Allow",
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowHttpHttpsInBound",
+            "properties": {
+              "priority": 1100,
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRanges": [
+                "80",
+                "443"
+              ],
+              "protocol": "Tcp",
+              "access": "Allow",
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

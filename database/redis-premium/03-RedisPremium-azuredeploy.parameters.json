@@ -1,0 +1,30 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "cacheName": {
+      "value": "demo-redis-prem"
+    },
+    "skuCapacity": {
+      "value": 1
+    },
+    "shardCount": {
+      "value": 2
+    },
+    "enableNonSslPort": {
+      "value": true
+    },
+    "vnetName": {
+      "value": "demo-redis-vnet"
+    },
+    "vnetSubnetName": {
+      "value": "demo-redis-vnet-app"
+    },
+    "staticIPAddress": {
+      "value": "10.0.0.36"
+    },
+    "rdbStorageAccountName": {
+      "value": "rimdemoredisrdb"
+    }
+  }
+}

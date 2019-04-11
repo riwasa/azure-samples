@@ -1,0 +1,3 @@
+RDP into the VM.
+Format the F: drive.
+Add a file to the F: drive.

@@ -1,0 +1,93 @@
+[2018/10/24 12:25:17.276-04:00] >>>>>>>>>>>>>>>>
+[2018/10/24 12:25:17.281-04:00][VERBOSE] 7.1.0 : AzCopy /source:. /Dest:https://rimdemopbstdlrs.blob.core.windows.net/uploads/ /DestKey:****** /Pattern:*.pptx /V:stdlog.txt /BlobType:Block
+[2018/10/24 12:25:17.312-04:00][WARNING] The command line "azcopy /source:. /Dest:https://rimdemopbpremlrs.blob.core.windows.net/uploads/ /DestKey:****** /Pattern:*.pptx /V:premlog.txt /BlobType:Block" in the journal file "C:\Users\riwasa\AppData\Local\Microsoft\Azure\AzCopy\AzCopy.jnl" is different from your input.
+[2018/10/24 12:25:17.314-04:00][WARNING] Incomplete operation with different command line detected at the journal directory "C:\Users\riwasa\AppData\Local\Microsoft\Azure\AzCopy".
+[2018/10/24 12:25:25.976-04:00][VERBOSE] [PROMPT] Do you want to overwrite the journal to start a new operation? Choose Yes to overwrite, choose No to cancel current operation. (Yes/No) : Y
+[2018/10/24 12:25:26.024-04:00][VERBOSE] Attempt to parse address '.' to a directory as a candidate location succeeded.
+[2018/10/24 12:25:26.029-04:00][VERBOSE] Source is interpreted as a Local directory: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\.
+[2018/10/24 12:25:26.055-04:00][VERBOSE] Attempt to parse address 'https://rimdemopbstdlrs.blob.core.windows.net/uploads/' to a directory as a candidate location succeeded.
+[2018/10/24 12:25:26.057-04:00][VERBOSE] Destination is interpreted as a Cloud blob directory: https://rimdemopbstdlrs.blob.core.windows.net/uploads.
+[2018/10/24 12:25:26.729-04:00][VERBOSE] Start transfer: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\SampleFile.pptx => https://rimdemopbstdlrs.blob.core.windows.net/uploads/SampleFile.pptx
+[2018/10/24 12:30:08.317-04:00][VERBOSE] Transfer FAILED: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\SampleFile.pptx => https://rimdemopbstdlrs.blob.core.windows.net/uploads/SampleFile.pptx.
+[2018/10/24 12:30:08.321-04:00][ERROR] C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\SampleFile.pptx: The transfer failed.
+Unable to write data to the transport connection: An existing connection was forcibly closed by the remote host.
+HttpStatusMessage:
+RequestId:
+Time:
+[2018/10/24 12:30:08.329-04:00] Transfer summary:
+-----------------
+Total files transferred: 1
+Transfer successfully:   0
+Transfer skipped:        0
+Transfer failed:         1
+Elapsed time:            00.00:04:51
+[2018/10/24 12:34:22.415-04:00] >>>>>>>>>>>>>>>>
+[2018/10/24 12:34:22.422-04:00][VERBOSE] 7.1.0 : AzCopy /source:. /Dest:https://rimdemopbstdlrs.blob.core.windows.net/uploads/ /DestKey:****** /Pattern:*.pptx /V:stdlog.txt /BlobType:Block
+[2018/10/24 12:34:22.451-04:00][WARNING] The command line "azcopy /source:. /Dest:https://rimdemopbpremlrs.blob.core.windows.net/uploads/ /DestKey:****** /Pattern:*.pptx /V:premlog.txt /BlobType:Block" in the journal file "C:\Users\riwasa\AppData\Local\Microsoft\Azure\AzCopy\AzCopy.jnl" is different from your input.
+[2018/10/24 12:34:22.453-04:00][WARNING] Incomplete operation with different command line detected at the journal directory "C:\Users\riwasa\AppData\Local\Microsoft\Azure\AzCopy".
+[2018/10/24 12:34:23.861-04:00][VERBOSE] [PROMPT] Do you want to overwrite the journal to start a new operation? Choose Yes to overwrite, choose No to cancel current operation. (Yes/No) : Y
+[2018/10/24 12:34:23.919-04:00][VERBOSE] Attempt to parse address '.' to a directory as a candidate location succeeded.
+[2018/10/24 12:34:23.926-04:00][VERBOSE] Source is interpreted as a Local directory: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\.
+[2018/10/24 12:34:23.962-04:00][VERBOSE] Attempt to parse address 'https://rimdemopbstdlrs.blob.core.windows.net/uploads/' to a directory as a candidate location succeeded.
+[2018/10/24 12:34:23.964-04:00][VERBOSE] Destination is interpreted as a Cloud blob directory: https://rimdemopbstdlrs.blob.core.windows.net/uploads.
+[2018/10/24 12:34:24.568-04:00][VERBOSE] Start transfer: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\KEY02.pptx => https://rimdemopbstdlrs.blob.core.windows.net/uploads/KEY02.pptx
+[2018/10/24 12:38:00.086-04:00][VERBOSE] Finished transfer: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\KEY02.pptx => https://rimdemopbstdlrs.blob.core.windows.net/uploads/KEY02.pptx
+[2018/10/24 12:38:00.091-04:00] Transfer summary:
+-----------------
+Total files transferred: 1
+Transfer successfully:   1
+Transfer skipped:        0
+Transfer failed:         0
+Elapsed time:            00.00:03:37
+[2018/10/24 17:34:36.733-04:00] >>>>>>>>>>>>>>>>
+[2018/10/24 17:34:36.739-04:00][VERBOSE] 7.1.0 : AzCopy /source:. /Dest:https://rimdemopbstdlrs.blob.core.windows.net/uploads/ /DestKey:****** /Pattern:*.pptx /V:stdlog.txt /BlobType:Block
+[2018/10/24 17:34:36.785-04:00][WARNING] The command line "azcopy /source:. /Dest:https://rimdemopbpremlrs.blob.core.windows.net/uploads/ /DestKey:****** /Pattern:*.pptx /V:premlog.txt /BlobType:Block" in the journal file "C:\Users\riwasa\AppData\Local\Microsoft\Azure\AzCopy\AzCopy.jnl" is different from your input.
+[2018/10/24 17:34:36.788-04:00][WARNING] Incomplete operation with different command line detected at the journal directory "C:\Users\riwasa\AppData\Local\Microsoft\Azure\AzCopy".
+[2018/10/24 17:34:38.471-04:00][VERBOSE] [PROMPT] Do you want to overwrite the journal to start a new operation? Choose Yes to overwrite, choose No to cancel current operation. (Yes/No) : Y
+[2018/10/24 17:34:38.537-04:00][VERBOSE] Attempt to parse address '.' to a directory as a candidate location succeeded.
+[2018/10/24 17:34:38.544-04:00][VERBOSE] Source is interpreted as a Local directory: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\.
+[2018/10/24 17:34:38.578-04:00][VERBOSE] Attempt to parse address 'https://rimdemopbstdlrs.blob.core.windows.net/uploads/' to a directory as a candidate location succeeded.
+[2018/10/24 17:34:38.580-04:00][VERBOSE] Destination is interpreted as a Cloud blob directory: https://rimdemopbstdlrs.blob.core.windows.net/uploads.
+[2018/10/24 17:34:39.253-04:00][VERBOSE] Start transfer: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\KEY03.pptx => https://rimdemopbstdlrs.blob.core.windows.net/uploads/KEY03.pptx
+[2018/10/24 17:37:23.406-04:00][VERBOSE] Finished transfer: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\KEY03.pptx => https://rimdemopbstdlrs.blob.core.windows.net/uploads/KEY03.pptx
+[2018/10/24 17:37:23.412-04:00] Transfer summary:
+-----------------
+Total files transferred: 1
+Transfer successfully:   1
+Transfer skipped:        0
+Transfer failed:         0
+Elapsed time:            00.00:02:46
+[2018/10/24 17:40:10.665-04:00] >>>>>>>>>>>>>>>>
+[2018/10/24 17:40:10.670-04:00][VERBOSE] 7.1.0 : AzCopy /source:. /Dest:https://rimdemopbstdlrs.blob.core.windows.net/uploads/ /DestKey:****** /Pattern:*.pptx /V:stdlog.txt /BlobType:Block
+[2018/10/24 17:40:10.746-04:00][VERBOSE] Attempt to parse address '.' to a directory as a candidate location succeeded.
+[2018/10/24 17:40:10.751-04:00][VERBOSE] Source is interpreted as a Local directory: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\.
+[2018/10/24 17:40:10.788-04:00][VERBOSE] Attempt to parse address 'https://rimdemopbstdlrs.blob.core.windows.net/uploads/' to a directory as a candidate location succeeded.
+[2018/10/24 17:40:10.790-04:00][VERBOSE] Destination is interpreted as a Cloud blob directory: https://rimdemopbstdlrs.blob.core.windows.net/uploads.
+[2018/10/24 17:40:11.395-04:00][VERBOSE] Start transfer: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\KEY04.pptx => https://rimdemopbstdlrs.blob.core.windows.net/uploads/KEY04.pptx
+[2018/10/24 17:41:37.293-04:00][VERBOSE] Finished transfer: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\KEY04.pptx => https://rimdemopbstdlrs.blob.core.windows.net/uploads/KEY04.pptx
+[2018/10/24 17:41:37.299-04:00] Transfer summary:
+-----------------
+Total files transferred: 1
+Transfer successfully:   1
+Transfer skipped:        0
+Transfer failed:         0
+Elapsed time:            00.00:01:26
+[2018/10/25 13:42:07.158-04:00] >>>>>>>>>>>>>>>>
+[2018/10/25 13:42:07.163-04:00][VERBOSE] 7.1.0 : AzCopy /source:. /Dest:https://rimdemopbstdlrs.blob.core.windows.net/uploads/ /DestKey:****** /Pattern:*.pptx /V:stdlog.txt /BlobType:Block
+[2018/10/25 13:42:07.195-04:00][WARNING] The command line "azcopy /source:. /Dest:https://rimdemopbprem2.blob.core.windows.net/uploads/ /DestKey:****** /Pattern:*.pptx /V:premlog.txt /BlobType:Block" in the journal file "C:\Users\riwasa\AppData\Local\Microsoft\Azure\AzCopy\AzCopy.jnl" is different from your input.
+[2018/10/25 13:42:07.197-04:00][WARNING] Incomplete operation with different command line detected at the journal directory "C:\Users\riwasa\AppData\Local\Microsoft\Azure\AzCopy".
+[2018/10/25 13:42:10.491-04:00][VERBOSE] [PROMPT] Do you want to overwrite the journal to start a new operation? Choose Yes to overwrite, choose No to cancel current operation. (Yes/No) : Y
+[2018/10/25 13:42:10.542-04:00][VERBOSE] Attempt to parse address '.' to a directory as a candidate location succeeded.
+[2018/10/25 13:42:10.547-04:00][VERBOSE] Source is interpreted as a Local directory: C:\Users\riwasa\Documents\Dev\Demo\premium-blob\.
+[2018/10/25 13:42:10.574-04:00][VERBOSE] Attempt to parse address 'https://rimdemopbstdlrs.blob.core.windows.net/uploads/' to a directory as a candidate location succeeded.
+[2018/10/25 13:42:10.576-04:00][VERBOSE] Destination is interpreted as a Cloud blob directory: https://rimdemopbstdlrs.blob.core.windows.net/uploads.
+[2018/10/25 13:42:11.206-04:00][VERBOSE] Start transfer: C:\Users\riwasa\Documents\Dev\Demo\premium-blob\KEY04.pptx => https://rimdemopbstdlrs.blob.core.windows.net/uploads/KEY04.pptx
+[2018/10/25 13:42:13.192-04:00][VERBOSE] [PROMPT] Overwrite https://rimdemopbstdlrs.blob.core.windows.net/uploads/KEY04.pptx with C:\Users\riwasa\Documents\Dev\Demo\premium-blob\KEY04.pptx? (Yes/No/All) : Y
+[2018/10/25 13:45:34.903-04:00][VERBOSE] Finished transfer: C:\Users\riwasa\Documents\Dev\Demo\premium-blob\KEY04.pptx => https://rimdemopbstdlrs.blob.core.windows.net/uploads/KEY04.pptx
+[2018/10/25 13:45:34.909-04:00] Transfer summary:
+-----------------
+Total files transferred: 1
+Transfer successfully:   1
+Transfer skipped:        0
+Transfer failed:         0
+Elapsed time:            00.00:03:27

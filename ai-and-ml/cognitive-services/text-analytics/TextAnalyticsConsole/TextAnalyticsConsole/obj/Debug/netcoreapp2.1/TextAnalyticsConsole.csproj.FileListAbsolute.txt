@@ -1,0 +1,11 @@
+C:\Users\riwasa\Documents\Dev\azure-samples\ai-and-ml\cognitive-services\text-analytics\TextAnalyticsConsole\TextAnalyticsConsole\bin\Debug\netcoreapp2.1\TextAnalyticsConsole.deps.json
+C:\Users\riwasa\Documents\Dev\azure-samples\ai-and-ml\cognitive-services\text-analytics\TextAnalyticsConsole\TextAnalyticsConsole\bin\Debug\netcoreapp2.1\TextAnalyticsConsole.runtimeconfig.json
+C:\Users\riwasa\Documents\Dev\azure-samples\ai-and-ml\cognitive-services\text-analytics\TextAnalyticsConsole\TextAnalyticsConsole\bin\Debug\netcoreapp2.1\TextAnalyticsConsole.runtimeconfig.dev.json
+C:\Users\riwasa\Documents\Dev\azure-samples\ai-and-ml\cognitive-services\text-analytics\TextAnalyticsConsole\TextAnalyticsConsole\bin\Debug\netcoreapp2.1\TextAnalyticsConsole.dll
+C:\Users\riwasa\Documents\Dev\azure-samples\ai-and-ml\cognitive-services\text-analytics\TextAnalyticsConsole\TextAnalyticsConsole\obj\Debug\netcoreapp2.1\TextAnalyticsConsole.csprojAssemblyReference.cache
+C:\Users\riwasa\Documents\Dev\azure-samples\ai-and-ml\cognitive-services\text-analytics\TextAnalyticsConsole\TextAnalyticsConsole\obj\Debug\netcoreapp2.1\TextAnalyticsConsole.csproj.CoreCompileInputs.cache
+C:\Users\riwasa\Documents\Dev\azure-samples\ai-and-ml\cognitive-services\text-analytics\TextAnalyticsConsole\TextAnalyticsConsole\obj\Debug\netcoreapp2.1\TextAnalyticsConsole.AssemblyInfoInputs.cache
+C:\Users\riwasa\Documents\Dev\azure-samples\ai-and-ml\cognitive-services\text-analytics\TextAnalyticsConsole\TextAnalyticsConsole\obj\Debug\netcoreapp2.1\TextAnalyticsConsole.AssemblyInfo.cs
+C:\Users\riwasa\Documents\Dev\azure-samples\ai-and-ml\cognitive-services\text-analytics\TextAnalyticsConsole\TextAnalyticsConsole\bin\Debug\netcoreapp2.1\TextAnalyticsConsole.pdb
+C:\Users\riwasa\Documents\Dev\azure-samples\ai-and-ml\cognitive-services\text-analytics\TextAnalyticsConsole\TextAnalyticsConsole\obj\Debug\netcoreapp2.1\TextAnalyticsConsole.dll
+C:\Users\riwasa\Documents\Dev\azure-samples\ai-and-ml\cognitive-services\text-analytics\TextAnalyticsConsole\TextAnalyticsConsole\obj\Debug\netcoreapp2.1\TextAnalyticsConsole.pdb

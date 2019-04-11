@@ -1,0 +1,131 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "cacheName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Redis cache."
+      }
+    },
+    "skuCapacity": {
+      "type": "int",
+      "defaultValue": 1,
+      "allowedValues": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "metadata": {
+        "description": "Capacity of the Redis cache. 0 - 6 for Basic and Standard; 1 - 4 for Premium."
+      }
+    },
+    "shardCount": {
+      "type": "int",
+      "metadata": {
+        "description": "Number of highly available shards to create in the cluster. Set to 0 to not set up clustering."
+      }
+    },
+    "enableNonSslPort": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Value indicating whether to allow access via non-SSL ports."
+      }
+    },
+    "vNetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of an existing Virtual Network, in the same Subscription and Region."
+      }
+    },
+    "vnetSubnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of an existing Subnet in the Virtual Network."
+      }
+    },
+    "staticIPAddress": {
+      "type": "string", 
+      "metadata": {
+        "description": "Static IP Address for the Redis cache."
+      }
+    },
+    "rdbStorageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Storage Account for RDB data persistence."
+      }
+    }
+  },
+  "variables": {
+    "skuName": "Premium",
+    "skuFamily": "P",
+    "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vNetName'))]",
+    "vnetSubnetId": "[concat(variables('vnetId'), '/subnets/', parameters('vnetSubnetName'))]",
+    "rdbStorageAccountNameFormatted": "[toLower(parameters('rdbStorageAccountName'))]",
+    "rdbStorageConnectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('rdbStorageAccountNameFormatted'), ';AccountKey=')]"
+  },
+  "resources": [
+    {
+      "comments": "Create the Storage Account for RDB data persistence.",
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2017-10-01",
+      "location": "[resourceGroup().location]",
+      "name": "[variables('rdbStorageAccountNameFormatted')]",
+      "kind": "Storage",
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "properties": {
+        "encryption": {
+          "services": {
+            "blob": {
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        },
+        "supportsHttpsTrafficOnly": true
+      }
+    },
+    {
+      "comments": "Create the Redis cache.",
+      "type": "Microsoft.Cache/redis",
+      "apiVersion": "2017-10-01",
+      "location": "[resourceGroup().location]",
+      "name": "[parameters('cacheName')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('rdbStorageAccountNameFormatted'))]"
+      ],
+      "properties": {
+        "enableNonSslPort": "[parameters('enableNonSslPort')]",
+        "redisConfiguration": {
+          "rdb-storage-connection-string": "[concat(variables('rdbStorageConnectionString'), listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('rdbStorageAccountNameFormatted')), '2016-01-01').keys[0].value)]",
+          "rdb-backup-enabled": "true",
+          "rdb-backup-frequency": "60",
+          "rdb-backup-max-snapshot-count": "1"
+        },
+        "shardCount": "[parameters('shardCount')]",
+        "sku": {
+          "name": "[variables('skuName')]",
+          "family": "[variables('skuFamily')]",
+          "capacity": "[parameters('skuCapacity')]"
+        },
+        "staticIP": "[parameters('staticIPAddress')]",
+        "subnetId": "[variables('vnetSubnetId')]"
+      }
+    }
+  ],
+  "outputs": {
+    "rediskey1": {
+      "type": "string",
+      "value": "[listkeys(resourceId('Microsoft.Cache/redis', parameters('cacheName')), '2017-10-01').primaryKey]"
+    },
+    "rediskey2": {
+      "type": "string",
+      "value": "[listkeys(resourceId('Microsoft.Cache/redis', parameters('cacheName')), '2017-10-01').secondaryKey]"
+    }
+  }
+}

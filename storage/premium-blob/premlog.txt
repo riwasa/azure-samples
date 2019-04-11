@@ -1,0 +1,93 @@
+[2018/10/24 12:30:08.534-04:00] >>>>>>>>>>>>>>>>
+[2018/10/24 12:30:08.538-04:00][VERBOSE] 7.1.0 : AzCopy /source:. /Dest:https://rimdemopbpremlrs.blob.core.windows.net/uploads/ /DestKey:****** /Pattern:*.pptx /V:premlog.txt /BlobType:Block
+[2018/10/24 12:30:08.561-04:00][WARNING] The command line "azcopy /source:. /Dest:https://rimdemopbstdlrs.blob.core.windows.net/uploads/ /DestKey:****** /Pattern:*.pptx /V:stdlog.txt /BlobType:Block" in the journal file "C:\Users\riwasa\AppData\Local\Microsoft\Azure\AzCopy\AzCopy.jnl" is different from your input.
+[2018/10/24 12:30:08.564-04:00][WARNING] Incomplete operation with different command line detected at the journal directory "C:\Users\riwasa\AppData\Local\Microsoft\Azure\AzCopy".
+[2018/10/24 12:30:15.204-04:00][VERBOSE] [PROMPT] Do you want to overwrite the journal to start a new operation? Choose Yes to overwrite, choose No to cancel current operation. (Yes/No) : Y
+[2018/10/24 12:30:15.245-04:00][VERBOSE] Attempt to parse address '.' to a directory as a candidate location succeeded.
+[2018/10/24 12:30:15.249-04:00][VERBOSE] Source is interpreted as a Local directory: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\.
+[2018/10/24 12:30:15.269-04:00][VERBOSE] Attempt to parse address 'https://rimdemopbpremlrs.blob.core.windows.net/uploads/' to a directory as a candidate location succeeded.
+[2018/10/24 12:30:15.270-04:00][VERBOSE] Destination is interpreted as a Cloud blob directory: https://rimdemopbpremlrs.blob.core.windows.net/uploads.
+[2018/10/24 12:30:15.897-04:00][VERBOSE] Start transfer: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\SampleFile.pptx => https://rimdemopbpremlrs.blob.core.windows.net/uploads/SampleFile.pptx
+[2018/10/24 12:34:02.599-04:00][VERBOSE] Transfer FAILED: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\SampleFile.pptx => https://rimdemopbpremlrs.blob.core.windows.net/uploads/SampleFile.pptx.
+[2018/10/24 12:34:02.603-04:00][ERROR] C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\SampleFile.pptx: The transfer failed.
+Unable to write data to the transport connection: An existing connection was forcibly closed by the remote host.
+HttpStatusMessage:
+RequestId:
+Time:
+[2018/10/24 12:34:02.608-04:00] Transfer summary:
+-----------------
+Total files transferred: 1
+Transfer successfully:   0
+Transfer skipped:        0
+Transfer failed:         1
+Elapsed time:            00.00:03:54
+[2018/10/24 12:38:00.270-04:00] >>>>>>>>>>>>>>>>
+[2018/10/24 12:38:00.274-04:00][VERBOSE] 7.1.0 : AzCopy /source:. /Dest:https://rimdemopbpremlrs.blob.core.windows.net/uploads/ /DestKey:****** /Pattern:*.pptx /V:premlog.txt /BlobType:Block
+[2018/10/24 12:38:00.342-04:00][VERBOSE] Attempt to parse address '.' to a directory as a candidate location succeeded.
+[2018/10/24 12:38:00.346-04:00][VERBOSE] Source is interpreted as a Local directory: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\.
+[2018/10/24 12:38:00.370-04:00][VERBOSE] Attempt to parse address 'https://rimdemopbpremlrs.blob.core.windows.net/uploads/' to a directory as a candidate location succeeded.
+[2018/10/24 12:38:00.371-04:00][VERBOSE] Destination is interpreted as a Cloud blob directory: https://rimdemopbpremlrs.blob.core.windows.net/uploads.
+[2018/10/24 12:38:01.021-04:00][VERBOSE] Start transfer: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\KEY02.pptx => https://rimdemopbpremlrs.blob.core.windows.net/uploads/KEY02.pptx
+[2018/10/24 12:41:41.623-04:00][VERBOSE] Transfer FAILED: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\KEY02.pptx => https://rimdemopbpremlrs.blob.core.windows.net/uploads/KEY02.pptx.
+[2018/10/24 12:41:41.626-04:00][ERROR] C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\KEY02.pptx: The transfer failed.
+Unable to write data to the transport connection: An existing connection was forcibly closed by the remote host.
+HttpStatusMessage:
+RequestId:
+Time:
+[2018/10/24 12:41:41.632-04:00] Transfer summary:
+-----------------
+Total files transferred: 1
+Transfer successfully:   0
+Transfer skipped:        0
+Transfer failed:         1
+Elapsed time:            00.00:03:41
+[2018/10/24 17:37:23.586-04:00] >>>>>>>>>>>>>>>>
+[2018/10/24 17:37:23.591-04:00][VERBOSE] 7.1.0 : AzCopy /source:. /Dest:https://rimdemopbprem2.blob.core.windows.net/uploads/ /DestKey:****** /Pattern:*.pptx /V:premlog.txt /BlobType:Block
+[2018/10/24 17:37:23.651-04:00][VERBOSE] Attempt to parse address '.' to a directory as a candidate location succeeded.
+[2018/10/24 17:37:23.655-04:00][VERBOSE] Source is interpreted as a Local directory: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\.
+[2018/10/24 17:37:23.677-04:00][VERBOSE] Attempt to parse address 'https://rimdemopbprem2.blob.core.windows.net/uploads/' to a directory as a candidate location succeeded.
+[2018/10/24 17:37:23.679-04:00][VERBOSE] Destination is interpreted as a Cloud blob directory: https://rimdemopbprem2.blob.core.windows.net/uploads.
+[2018/10/24 17:37:24.300-04:00][VERBOSE] Start transfer: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\KEY03.pptx => https://rimdemopbprem2.blob.core.windows.net/uploads/KEY03.pptx
+[2018/10/24 17:39:38.559-04:00][VERBOSE] Finished transfer: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\KEY03.pptx => https://rimdemopbprem2.blob.core.windows.net/uploads/KEY03.pptx
+[2018/10/24 17:39:38.565-04:00] Transfer summary:
+-----------------
+Total files transferred: 1
+Transfer successfully:   1
+Transfer skipped:        0
+Transfer failed:         0
+Elapsed time:            00.00:02:14
+[2018/10/24 17:41:37.467-04:00] >>>>>>>>>>>>>>>>
+[2018/10/24 17:41:37.472-04:00][VERBOSE] 7.1.0 : AzCopy /source:. /Dest:https://rimdemopbprem2.blob.core.windows.net/uploads/ /DestKey:****** /Pattern:*.pptx /V:premlog.txt /BlobType:Block
+[2018/10/24 17:41:37.534-04:00][VERBOSE] Attempt to parse address '.' to a directory as a candidate location succeeded.
+[2018/10/24 17:41:37.538-04:00][VERBOSE] Source is interpreted as a Local directory: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\.
+[2018/10/24 17:41:37.561-04:00][VERBOSE] Attempt to parse address 'https://rimdemopbprem2.blob.core.windows.net/uploads/' to a directory as a candidate location succeeded.
+[2018/10/24 17:41:37.562-04:00][VERBOSE] Destination is interpreted as a Cloud blob directory: https://rimdemopbprem2.blob.core.windows.net/uploads.
+[2018/10/24 17:41:38.188-04:00][VERBOSE] Start transfer: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\KEY04.pptx => https://rimdemopbprem2.blob.core.windows.net/uploads/KEY04.pptx
+[2018/10/24 17:45:30.357-04:00][VERBOSE] Transfer FAILED: C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\KEY04.pptx => https://rimdemopbprem2.blob.core.windows.net/uploads/KEY04.pptx.
+[2018/10/24 17:45:30.359-04:00][ERROR] C:\Users\riwasa\Documents\Dev\azure-samples\storage\premium-blob\KEY04.pptx: The transfer failed.
+Unable to read data from the transport connection: The connection was closed.
+HttpStatusMessage:
+RequestId:
+Time:
+[2018/10/24 17:45:30.365-04:00] Transfer summary:
+-----------------
+Total files transferred: 1
+Transfer successfully:   0
+Transfer skipped:        0
+Transfer failed:         1
+Elapsed time:            00.00:03:52
+[2018/10/25 13:45:35.120-04:00] >>>>>>>>>>>>>>>>
+[2018/10/25 13:45:35.123-04:00][VERBOSE] 7.1.0 : AzCopy /source:. /Dest:https://rimdemopbprem2.blob.core.windows.net/uploads/ /DestKey:****** /Pattern:*.pptx /V:premlog.txt /BlobType:Block
+[2018/10/25 13:45:35.187-04:00][VERBOSE] Attempt to parse address '.' to a directory as a candidate location succeeded.
+[2018/10/25 13:45:35.191-04:00][VERBOSE] Source is interpreted as a Local directory: C:\Users\riwasa\Documents\Dev\Demo\premium-blob\.
+[2018/10/25 13:45:35.214-04:00][VERBOSE] Attempt to parse address 'https://rimdemopbprem2.blob.core.windows.net/uploads/' to a directory as a candidate location succeeded.
+[2018/10/25 13:45:35.216-04:00][VERBOSE] Destination is interpreted as a Cloud blob directory: https://rimdemopbprem2.blob.core.windows.net/uploads.
+[2018/10/25 13:45:35.862-04:00][VERBOSE] Start transfer: C:\Users\riwasa\Documents\Dev\Demo\premium-blob\KEY04.pptx => https://rimdemopbprem2.blob.core.windows.net/uploads/KEY04.pptx
+[2018/10/25 13:47:48.556-04:00][VERBOSE] Finished transfer: C:\Users\riwasa\Documents\Dev\Demo\premium-blob\KEY04.pptx => https://rimdemopbprem2.blob.core.windows.net/uploads/KEY04.pptx
+[2018/10/25 13:47:48.563-04:00] Transfer summary:
+-----------------
+Total files transferred: 1
+Transfer successfully:   1
+Transfer skipped:        0
+Transfer failed:         0
+Elapsed time:            00.00:02:13

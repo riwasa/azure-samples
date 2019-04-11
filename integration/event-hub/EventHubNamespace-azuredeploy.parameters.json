@@ -1,0 +1,21 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "namespaceName": {
+      "value": "rim-core-activitylogexport-ns"
+    },
+    "throughputUnits": {
+      "value": 1
+    },
+    "namespaceSku": {
+      "value": "Basic"
+    },
+    "enableAutoInflate": {
+      "value": true
+    },
+    "autoInflateMaximumThroughputUnits": {
+      "value": 4
+    }
+  }
+}

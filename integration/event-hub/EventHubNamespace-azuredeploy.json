@@ -1,0 +1,77 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "namespaceName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Event Hub Namespace."
+      }
+    },
+    "throughputUnits": {
+      "type": "int",
+      "defaultValue": 1,
+      "metadata": {
+        "description": "Number of Throughput Units"
+      }
+    },
+    "namespaceSku": {
+      "type": "string",
+      "allowedValues": [
+        "Basic",
+        "Standard"
+      ],
+      "defaultValue": "Basic",
+      "metadata": {
+        "description": "Name/Tier of the Event Hub Namespace."
+      }
+    },
+    "enableAutoInflate": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Value indicating whether to automatically scale the Throughput Units."
+      }
+    },
+    "autoInflateMaximumThroughputUnits": {
+      "type": "int",
+      "defaultValue": 2,
+      "metadata": {
+        "description": "Maximum number of Throughput Units to automatically scale to."
+      }
+    }
+  },
+  "variables": {
+    "isBasic": "[equals(parameters('namespaceSku'), 'Basic')]",
+    "defaultSASKeyName": "RootManageSharedAccessKey",
+    "authRuleResourceId": "[resourceId('Microsoft.EventHub/namespaces/authorizationRules', parameters('namespaceName'), variables('defaultSASKeyName'))]"
+  },
+  "resources": [
+    {
+      "comments": "Creates the Event Hub Namespace.",
+      "type": "Microsoft.EventHub/namespaces",
+      "apiVersion": "2017-04-01",
+      "name": "[parameters('namespaceName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "capacity": "[parameters('throughputUnits')]",
+        "name":  "[parameters('namespaceSku')]",
+        "tier": "[parameters('namespaceSku')]"
+      },
+      "properties": {
+        "isAutoInflateEnabled": "[if(variables('isBasic'), json('false'), parameters('enableAutoInflate'))]",
+        "maximumThroughputUnits": "[if(variables('isBasic'), json('null'), parameters('autoInflateMaximumThroughputUnits'))]"
+      }
+    }
+  ],
+  "outputs": {
+    "NamespaceConnectionString": {
+      "type": "string",
+      "value": "[listkeys(variables('authRuleResourceId'), '2017-04-01').primaryConnectionString]"
+    },
+    "SharedAccessPolicyPrimaryKey": {
+      "type": "string",
+      "value": "[listkeys(variables('authRuleResourceId'), '2017-04-01').primaryKey]"
+    }
+  }
+}

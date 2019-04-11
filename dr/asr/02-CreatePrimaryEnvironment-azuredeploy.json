@@ -1,0 +1,221 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "workloadName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the workload"
+      }
+    },
+    "vnetAddressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Address Prefix for the Virtual Network"
+      }
+    },
+    "vnetSubnetSuffix": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Virtual Network Subnet"
+      }
+    },
+    "vnetSubnetAddressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Address Prefix for the Virtual Network Subnet"
+      }
+    },
+    "computerName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the computer"
+      }
+    },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "Administrator username"
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Administrator password"
+      }
+    }
+  },
+  "variables": {
+    "resourcePrefix": "[concat(toLower(resourceGroup().name), '-', toLower(parameters('workloadName')))]",
+    "publicIPAddressName": "[concat(variables('resourcePrefix'), '-pip')]",
+    "domainNameLabelPrefix": "[concat('rim-', variables('resourcePrefix'))]",
+    "vnetName": "[concat(toLower(resourceGroup().name), '-vnet')]",
+    "vnetSubnetName": "[concat(variables('vnetName'), '-', parameters('vnetSubnetSuffix'))]",
+    "nsgName": "[concat(variables('resourcePrefix'), '-nsg')]",
+    "nicName": "[concat(variables('resourcePrefix'), '-nic')]",
+    "vmName": "[concat(variables('resourcePrefix'), '-vm')]",
+    "vmSize": "Standard_D2s_v3",
+    "windowsOffer": "WindowsServer",
+    "windowsSku": "2016-Datacenter",
+    "windowsPublisher": "MicrosoftWindowsServer"
+  },
+  "resources": [
+    {
+      "comments": "Create a Public IP Address",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2018-11-01",
+      "name": "[variables('publicIPAddressName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[variables('domainNameLabelPrefix')]"
+        }
+      }
+    },
+    {
+      "comments": "Create a Virtual Network",
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2018-11-01",
+      "name": "[variables('vnetName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('vnetAddressPrefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('vnetSubnetName')]",
+            "properties": {
+              "addressPrefix": "[parameters('vnetSubnetAddressPrefix')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "comments": "Create a Network Security Group",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2018-11-01",
+      "name": "[variables('nsgName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "AllowRDPInBound",
+            "properties": {
+              "priority": 1000,
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "3389",
+              "protocol": "Tcp",
+              "access": "Allow",
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "AllowHttpHttpsInBound",
+            "properties": {
+              "priority": 1100,
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRanges": [
+                "80",
+                "443"
+              ],
+              "protocol": "Tcp",
+              "access": "Allow",
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    }, 
+    {
+      "comments": "Create a Network Interface",
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2018-11-01",
+      "name": "[variables('nicName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
+        "[resourceId('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
+        "[resourceId('Microsoft.Network/networkSecurityGroups/', variables('nsgName'))]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))]"
+              },
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('vnetSubnetName'))]"         
+              }
+            }
+          }
+        ],
+        "networkSecurityGroup": { 
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]" 
+        }     
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2018-10-01",
+      "name": "[variables('vmName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[variables('vmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[parameters('computerName')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[variables('windowsPublisher')]",
+            "offer": "[variables('windowsOffer')]",
+            "version": "latest",
+            "sku": "[variables('windowsSku')]"
+          },
+          "osDisk": {
+            "name": "[concat(variables('vmName'), '-osdisk')]",
+            "createOption": "FromImage",
+            "managedDisk": {
+              "storageAccountType": "Premium_LRS"
+            }
+          },
+          "dataDisks": [
+            {
+              "name": "[concat(variables('vmName'), '-datadisk1')]",
+              "diskSizeGB": 32,
+              "lun": 0,
+              "createOption": "Empty"
+            }
+          ]
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "outputs": {
+  }
+}

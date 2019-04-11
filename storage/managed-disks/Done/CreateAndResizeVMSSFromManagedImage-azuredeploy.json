@@ -1,0 +1,262 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmssName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the VM Scale Set"
+      }
+    },
+    "dnsNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Prefix for the DNS name of the new IP Address created"
+      }
+    },
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_D2_v2",
+      "metadata": {
+        "description": "Size of the VM instances created"
+      }
+    },
+    "instanceCount": {
+      "type": "int",
+      "metadata": {
+        "description": "Number of VM instances to create"
+      },
+      "defaultValue": 3
+    },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "The Username of the administrative user for each VM instance created"
+      },
+      "defaultValue": "rimadmin"
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The Password of the administrative user for each VM instance created"
+      },
+      "defaultValue": "Aremai2569!!"
+    },
+    "imageId": {
+      "type": "string",
+      "metadata":{
+        "description": "Id of the Managed Image"
+      }
+    }
+  },
+  "variables": {
+    "vnetName": "vmss-demo-vnet",
+    "vnetAddressPrefix": "10.0.0.0/22",
+    "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]",
+    "vnetSubnetName": "Default",
+    "vnetSubnetPrefix": "10.0.0.0/26",
+    "vnetSubnetId": "[concat(variables('vnetId'), '/subnets/', variables('vnetSubnetName'))]",
+    "publicIPAddressName": "vmss-demo-pip2",
+    "publicIPAddressId": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))]",
+    "lbName": "vmss-demo-lb",
+    "lbFEIPConfigName": "LBFrontEnd",
+    "lbBEAddressPoolName": "LBBackEnd",
+    "lbHttpRuleName": "HttpRule",
+    "lbHttpProbeName": "HttpProbe",
+    "natPoolName": "SSHNATPool",
+    "natStartPort": 50000, 
+    "natEndPort": 50100, 
+    "natBackendPort": 22,
+    "lbId": "[resourceId('Microsoft.Network/loadBalancers', variables('lbName'))]",
+    "lbFEIPConfigId": "[concat(variables('lbId'), '/frontendIPConfigurations/', variables('lbFEIPConfigName'))]",
+    "lbBEAddressPoolId": "[concat(variables('lbId'), '/backendAddressPools/', variables('lbBEAddressPoolName'))]",
+    "lbHttpProbeId": "[concat(variables('lbId'), '/probes/', variables('lbHttpProbeName'))]",
+    "lbNatPoolId": "[concat(variables('lbId'), '/inboundNatPools/', variables('natPoolName'))]",
+    "feLBPort": 80,
+    "beLBPort": 80,
+    "probeIntervalInSeconds": 15,
+    "numberOfProbes": 5,
+    "probeRequestPath": "/iisstart.htm"
+ },
+  "resources": [
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2017-03-01",
+      "name": "[variables('vnetName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('vnetAddressPrefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('vnetSubnetName')]",
+            "properties": {
+              "addressPrefix": "[variables('vnetSubnetPrefix')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2017-03-01",
+      "name": "[variables('publicIPAddressName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings":{
+          "domainNameLabel": "[parameters('dnsNamePrefix')]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Network/loadBalancers",
+      "apiVersion": "2017-03-01",
+      "name": "[variables('lbName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]"
+      ],
+      "properties": {
+        "frontendIPConfigurations": [
+          {
+            "name": "[variables('lbFEIPConfigName')]",
+            "properties": {
+              "publicIPAddress": {
+                "id": "[variables('publicIPAddressId')]"
+              }
+            }
+          }
+        ],
+        "backendAddressPools": [
+          {
+            "name": "[variables('lbBEAddressPoolName')]"
+          }
+        ],
+        "probes": [
+          {
+            "name": "[variables('lbHttpProbeName')]",
+            "properties": {
+              "protocol": "Http",
+              "port": "[variables('beLBPort')]",
+              "intervalInSeconds": "[variables('probeIntervalInSeconds')]",
+              "numberOfProbes": "[variables('numberOfProbes')]",
+              "requestPath": "[variables('probeRequestPath')]"
+            }
+          }
+        ],
+        "loadBalancingRules": [
+          {
+            "name": "[variables('lbHttpRuleName')]",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('lbFEIPConfigId')]"
+              },
+              "backendAddressPool": {
+                "id": "[variables('lbBEAddressPoolId')]"
+              },
+              "probe": {
+                "id": "[variables('lbHttpProbeId')]"
+              },
+              "protocol": "Tcp",
+              "frontendPort": "[variables('feLBPort')]",
+              "backendPort": "[variables('beLBPort')]",
+              "enableFloatingIP": false
+            }
+          }
+        ],
+        "inboundNatPools": [ 
+          { 
+            "name": "[variables('natPoolName')]", 
+            "properties": { 
+              "frontendIPConfiguration": { 
+                "id": "[variables('lbFEIPConfigId')]" 
+              }, 
+              "protocol": "Tcp", 
+              "frontendPortRangeStart": "[variables('natStartPort')]", 
+              "frontendPortRangeEnd": "[variables('natEndPort')]", 
+              "backendPort": "[variables('natBackendPort')]" 
+            } 
+          } 
+        ] 
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachineScaleSets",
+      "apiVersion": "2016-04-30-preview",
+      "name": "[parameters('vmssName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/loadBalancers/', variables('lbName'))]",
+        "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]"
+      ],
+      "sku": {
+        "name": "[parameters('vmSize')]",
+        "tier": "Standard",
+        "capacity": "[parameters('instanceCount')]"
+      },
+      "properties": {
+        "overprovision": true,
+        "upgradePolicy": {
+          "mode": "Manual"
+        },
+        "virtualMachineProfile": {
+          "storageProfile": { 
+            "imageReference": { 
+              "id": "[parameters('imageId')]" 
+            },
+            "osDisk": {
+              "diskSizeGB": 80,
+              "createOption":"FromImage"
+            }
+          },
+          "osProfile": {
+            "computerNamePrefix": "[parameters('vmSSName')]",
+            "adminUsername": "[parameters('adminUsername')]",
+            "adminPassword": "[parameters('adminPassword')]"
+          },
+          "networkProfile": {
+            "networkInterfaceConfigurations": [
+              {
+                "name": "nic1",
+                "properties": {
+                  "primary": true,
+                  "ipConfigurations": [
+                    {
+                      "name": "ip1",
+                      "properties": {
+                        "subnet": {
+                          "id": "[variables('vnetSubnetId')]"
+                        },
+                        "loadBalancerBackendAddressPools": [
+                          {
+                            "id": "[variables('lbBEAddressPoolId')]"
+                          }
+                        ],
+                        "loadBalancerInboundNatPools": [
+                          {
+                            "id": "[variables('lbNATPoolId')]"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "fqdn": {
+      "value": "[reference(variables('publicIPAddressID'),providers('Microsoft.Network','publicIPAddresses').apiVersions[0]).dnsSettings.fqdn]",
+      "type": "string"
+    }
+  }
+}
+
