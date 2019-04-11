@@ -15,7 +15,7 @@ namespace NETCoreSDK
             Console.WriteLine("Hello World!");
 
             string storageAccountName = "rimdemostrnetcoresdk";
-            string storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=rimdemostrnetcoresdk;AccountKey=9Er3DJ72Q/JMKcG98sdBdGmEF0dDiEmMaSRS6qWA9OgN9bFz7stU8cyGGvQWNgzRmETfurLlqtiq8jlS7zRzUQ==;EndpointSuffix=core.windows.net";
+            string storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=rimdemostrnetcoresdk;AccountKey=;EndpointSuffix=core.windows.net";
 
             ProcessAsync(storageAccountName, storageConnectionString).GetAwaiter().GetResult();
 

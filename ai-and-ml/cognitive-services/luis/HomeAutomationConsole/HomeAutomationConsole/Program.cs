@@ -20,7 +20,7 @@ namespace HomeAutomationConsole
 
             // This app ID is for a public sample app that recognizes requests to turn on and turn off lights
             var luisAppId = "df67dcdb-c37d-46af-88e1-8b97951ca1c2";
-            var endpointKey = "f163b6be0fb849c4a80e65bae9f6282d";
+            var endpointKey = "";
 
             // The request header contains your subscription key
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", endpointKey);
