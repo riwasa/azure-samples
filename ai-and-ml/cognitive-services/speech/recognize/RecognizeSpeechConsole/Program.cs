@@ -11,7 +11,7 @@ namespace RecognizeSpeechConsole
         {
             // Creates an instance of a speech config with specified subscription key and service region.
             // Replace with your own subscription key // and service region (e.g., "westus").
-            var config = SpeechConfig.FromSubscription("d204d3f43a514178b3237b97328ac2db", "eastus2");
+            var config = SpeechConfig.FromSubscription("", "eastus2");
 
             // Creates a speech recognizer.
             using (var recognizer = new SpeechRecognizer(config))

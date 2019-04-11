@@ -33,7 +33,7 @@ namespace TranslateSpeechConsole
 
             // Creates an instance of a speech translation config with specified subscription key and service region.
             // Replace with your own subscription key and service region (e.g., "westus").
-            var config = SpeechTranslationConfig.FromSubscription("d204d3f43a514178b3237b97328ac2db", "eastus2");
+            var config = SpeechTranslationConfig.FromSubscription("", "eastus2");
             config.SpeechRecognitionLanguage = fromLanguage;
             config.VoiceName = GermanVoice;
 

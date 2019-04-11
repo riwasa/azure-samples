@@ -14,7 +14,7 @@ namespace TextAnalyticsConsole
     {
         /// <summary>
         /// Container for subscription credentials. Make sure to enter your valid key.
-        private static string subscriptionKey = "fd2b9eac7c5745a7b5428077829f7f67"; //Insert your Text Anaytics subscription key
+        private static string subscriptionKey = ""; //Insert your Text Anaytics subscription key
         
         /// </summary>
         class ApiKeyServiceClientCredentials : ServiceClientCredentials
