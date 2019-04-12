@@ -1,6 +1,6 @@
 # *****************************************************************************
 #
-# File:        Audit-PublicBlobContainers.ps1
+# File:        Audit-PublicBlobContainers-Standalone.ps1
 #
 # Description: Checks for public read-only blob containers in Storage Account
 #              in Subscriptions accessible to the user.
@@ -18,12 +18,6 @@
 # SOFTWARE.
 # 
 # *****************************************************************************
-
-# Log in for ARM.
-#Login-AzureRmAccount
-
-# Log in for ASM.
-#Add-AzureAccount
 
 # Get all Azure Subscriptions accessible to the user.
 $subscriptions = Get-AzureRmSubscription
