@@ -1,0 +1,33 @@
+{
+  "$schema": "https://rimcorearm.blob.core.windows.net/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "logAnalyticsWorkspaceName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Log Analytics Workspace"
+      }
+    },
+    "automationAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Automation Account"
+      }
+    }
+  },
+  "variables": {
+  },
+  "resources": [
+    {
+      "comments": "Link an Automation Account to a Log Analytics Workspace",
+      "type": "Microsoft.OperationalInsights/workspaces/linkedServices",
+      "apiVersion": "2015-11-01-preview",
+      "name": "[concat(tolower(parameters('logAnalyticsWorkspaceName')), '/Automation')]",
+      "properties": {
+        "resourceId": "[resourceId('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]"
+      }
+    }
+  ],
+  "outputs": {
+  }
+}
