@@ -16,7 +16,7 @@
 # *****************************************************************************
 
 # Get all Log Analytics Workspaces in the current Subscription.
-$workspaces = Get-AzOperationalInsightsWorkspace
+$workspaces = Get-AzureRmOperationalInsightsWorkspace
 
 foreach ($workspace in $workspaces)
 {
@@ -28,6 +28,6 @@ foreach ($workspace in $workspaces)
 
   $query = "Heartbeat | summarize LastCall = max(TimeGenerated) by Computer"
 
-  $queryResults = Invoke-AzOperationalInsightsQuery -WorkspaceId $workspace.CustomerId -Query $query
+  $queryResults = Invoke-AzureRmOperationalInsightsQuery -WorkspaceId $workspace.CustomerId -Query $query
   $queryResults.Results
 }
