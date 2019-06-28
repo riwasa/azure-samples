@@ -1,0 +1,63 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "clusterName": {
+      "minLength": 4,
+      "maxLength": 22,
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Azure Data Explorer Cluster. Use only lowercase letters and numbers."
+      }
+    },
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "The Region of the Azure Data Explorer Cluster."
+      }
+    },
+    "skuName": {
+      "allowedValues": [
+        "Dev(No SLA)_Standard_D11_v2",
+        "Standard_D11_v2",
+        "Standard_D12_v2",
+        "Standard_D13_v2",
+        "Standard_D14_v2",
+        "Standard_L4s",
+        "Standard_L8s",
+        "Standard_L16s",
+        "Standard_DS13_v2+1TB_PS",
+        "Standard_DS13_v2+2TB_PS",
+        "Standard_DS14_v2+3TB_PS",
+        "Standard_DS14_v2+4TB_PS"
+      ],
+      "type": "string",
+      "metadata": {
+        "description": "The sku name."
+      }
+    },
+    "tier": {
+      "allowedValues": [
+        "Standard",
+        "Basic"
+      ],
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the tier of the Azure Data Explorer Cluster."
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Kusto/Clusters",
+      "apiVersion": "2019-01-21",
+      "name": "[parameters('clusterName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[parameters('skuName')]",
+        "tier": "[parameters('tier')]"
+      },
+      "properties": {}
+    }
+  ]
+}  
