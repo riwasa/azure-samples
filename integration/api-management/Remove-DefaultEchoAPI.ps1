@@ -15,8 +15,8 @@
 # *****************************************************************************
 
 # Set script variables.
-$resourceGroupName = "rim-man-sec"
-$apimServiceName = "rim-man-sec-apim"
+$resourceGroupName = "<enter-resource-group-name-here>"
+$apimServiceName = "<enter-apim-service-name-here>"
 
 $apimContext = New-AzApiManagementContext -ResourceGroupName $resourceGroupName `
   -ServiceName $apimServiceName
