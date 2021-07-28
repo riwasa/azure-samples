@@ -1,0 +1,120 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "applicationInsightsName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Application Insights Component."
+      }
+    },
+    "logAnalyticsName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Log Analytics Workspace."
+      } 
+    },
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource location."
+      }
+    },
+    "applicationType": {
+      "type": "string",
+      "metadata": {
+        "description": "Type of application being monitored."
+      },
+      "allowedValues": [
+        "other",
+        "web"
+      ]
+    },
+    "dailyQuotaGb": {
+      "type": "int",
+      "metadata": {
+        "description": "The workspace daily quota for ingestion."
+      }
+    },
+    "disableIpMasking": {
+      "type": "bool",
+      "metadata": {
+        "description": "Disable IP masking."
+      }
+    },
+    "publicNetworkAccessForIngestion": {
+      "type": "string",
+      "metadata": {
+        "description": "The network access type for accessing Application Insights ingestion."
+      },
+      "allowedValues": [
+        "Disabled",
+        "Enabled"
+      ]
+    },
+    "publicNetworkAccessForQuery": {
+      "type": "string",
+      "metadata": {
+        "description": "The network access type for accessing Application Insights query."
+      },
+      "allowedValues": [
+        "Disabled",
+        "Enabled"
+      ]
+    },
+    "retentionInDays": {
+      "type": "int",
+      "metadata": {
+        "description": "The workspace data retention in days, between 30 and 730."
+      }
+    },
+    "samplingPercentage": {
+      "type": "int",
+      "metadata": {
+        "description": "Percentage of the data produced by the application being monitored that is being sampled for Application Insights telemetry."
+      }
+    }
+  },
+  "resources": [
+    {
+      "comments": "Create a Log Analytics Workspace",
+      "type": "Microsoft.OperationalInsights/workspaces",
+      "apiVersion": "2020-10-01",
+      "name": "[parameters('logAnalyticsName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "publicNetworkAccessForIngestion": "[parameters('publicNetworkAccessForIngestion')]",
+        "publicNetworkAccessForQuery": "[parameters('publicNetworkAccessForQuery')]",
+        "retentionInDays": "[parameters('retentionInDays')]",
+        "sku": {
+          "name": "PerGB2018"
+        },
+        "workspaceCapping": {
+          "dailyQuotaGb": "[parameters('dailyQuotaGb')]"
+        }
+      }
+    },
+    {
+      "comments": "Create an Application Insights Component",
+      "type": "Microsoft.Insights/components",
+      "apiVersion": "2020-02-02-preview",
+      "name": "[parameters('applicationInsightsName')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsName'))]"
+      ],
+      "kind": "web",
+      "properties": {
+        "Application_Type": "[parameters('applicationType')]",
+        "DisableIpMasking": "[parameters('disableIpMasking')]",
+        "Flow_Type": "Bluefield",
+        "IngestionMode": "LogAnalytics",
+        "publicNetworkAccessForIngestion": "[parameters('publicNetworkAccessForIngestion')]",
+        "publicNetworkAccessForQuery": "[parameters('publicNetworkAccessForQuery')]", 
+        "Request_Source": "rest",
+        "SamplingPercentage": "[parameters('samplingPercentage')]",
+        "WorkspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsName'))]"
+      }
+    }
+  ]
+}
