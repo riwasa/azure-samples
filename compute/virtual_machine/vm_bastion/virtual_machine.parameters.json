@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "autoShutdownTime": {
+      "value": "19:00"
+    },
+    "autoShutdownTimeZone": {
+      "value": "Eastern Standard Time"
+    },
+    "imageReference": {
+      "value": {
+        "publisher": "MicrosoftWindowsServer",
+        "offer": "WindowsServer",
+        "sku": "2022-datacenter-azure-edition",
+        "version": "latest"
+      }
+    },
+    "osDisk": {
+      "value": {
+        "createOption": "fromImage",
+        "caching": "None",
+        "diskSizeGB": "128",
+        "managedDisk": {
+          "storageAccountType": "StandardSSD_LRS"
+        }
+      }
+    },
+    "vmSize": {
+      "value": "Standard_D2s_v3"
+    }
+  }
+}
