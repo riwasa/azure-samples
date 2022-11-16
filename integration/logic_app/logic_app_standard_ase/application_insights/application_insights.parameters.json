@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "applicationType": {
+      "value": "web"
+    },
+    "dailyQuotaGb": {
+      "value": 1
+    },
+    "kind": {
+      "value": "web"
+    },
+    "publicNetworkAccessForIngestion": {
+      "value": "Enabled"
+    },
+    "publicNetworkAccessForQuery": {
+      "value": "Enabled"
+    },
+    "retentionInDays": {
+      "value": 90
+    }
+  }
+}
