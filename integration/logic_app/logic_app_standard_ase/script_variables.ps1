@@ -19,8 +19,8 @@ $location = "eastus2"
 $locationName = "East US 2"
 
 # Resource Group name.
-$resourceGroupName = "rim-man-us-logicase"
-$resourceGroupRawName = "rimmanuslogicase"
+$resourceGroupName = "rim-demo-logicase"
+$resourceGroupRawName = "rimdemologicase"
 
 # App Service Environment name.
 $appServiceEnvironmentName = "$($resourceGroupName)-ase"
