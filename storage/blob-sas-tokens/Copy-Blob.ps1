@@ -4,6 +4,10 @@
 #
 # Description: Copies a blob from one Storage Account to another.
 #
+#              Note the keys for the source and destination Storage
+#              Accounts should be secured in a Key Vault or as pipeline
+#              secrets and not directly embedded in this script.
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -14,6 +18,7 @@
 # 
 # *****************************************************************************
 
+# Generate a service SAS token for a Storage Account blob.
 function Get-ServiceSasToken {
 
   param (
@@ -76,18 +81,24 @@ function Get-ServiceSasToken {
   return $sasToken
 }
 
+# The key for the source Storage Account should be secured in a Key Vault
+# or as a pipeline secret and not directly embedded in this script.
 $sourceStorageAccountName = "<name-of-the-source-storage-account>"
 $sourceAccountKey = "<source-storage-account-key>"
 $sourceContainerName = "<source-blob-container-name>"
 $sourceBlobName = "<source-blob-name>"
 
+# Create a service SAS token for the source Storage Account blob with read permissions.
 $sourceSasToken = Get-ServiceSasToken -storageAccountName $sourceStorageAccountName -storageAccountKey $sourceAccountKey `
     -containerName $sourceContainerName -blobName $sourceBlobName -signedPermissions "r"
 
+# The key for the destination Storage Account should be secured in a Key Vault
+# or as a pipeline secret and not directly embedded in this script.
 $destStorageAccountName = "<name-of-the-destination-storage-account>"
 $destAccountKey = "<destination-storage-account-key>"
 $destContainerName = "<destination-blob-container-name>"
 
+# Create a service SAS token for the destination Storage Account blob with write permissions.
 $destSasToken = Get-ServiceSasToken -storageAccountName $destStorageAccountName -storageAccountKey $destAccountKey `
     -containerName $destContainerName -blobName $sourceBlobName -signedPermissions "w"
 
@@ -102,4 +113,5 @@ $headers = @{
   "Content-length" = 0
 }
 
+# Copy the blob from the source Storage Account to the destination Storage Account.
 Invoke-WebRequest $destUrl -Method "PUT" -Headers $headers

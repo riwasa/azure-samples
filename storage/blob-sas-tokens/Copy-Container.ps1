@@ -5,6 +5,10 @@
 # Description: Copies blobs in the specified container from one Storage 
 #              Account to another.
 #
+#              Note the keys for the source and destination Storage
+#              Accounts should be secured in a Key Vault or as pipeline
+#              secrets and not directly embedded in this script.
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -15,6 +19,7 @@
 # 
 # *****************************************************************************
 
+# Generate a service SAS token for a Storage Account container.
 function Get-ServiceSasToken {
 
   param (
@@ -76,17 +81,23 @@ function Get-ServiceSasToken {
   return $sasToken
 }
 
+# The key for the source Storage Account should be secured in a Key Vault
+# or as a pipeline secret and not directly embedded in this script.
 $sourceStorageAccountName = "<source storage account name>"
 $sourceAccountKey = "<source storage account key>"
 $sourceContainerName = "<source blob container name>"
 
+# Create a service SAS token for the source Storage Account container with read and list permissions.
 $sourceSasToken = Get-ServiceSasToken -storageAccountName $sourceStorageAccountName -storageAccountKey $sourceAccountKey `
   -containerName $sourceContainerName -signedPermissions "rl"
 
+# The key for the destination Storage Account should be secured in a Key Vault
+# or as a pipeline secret and not directly embedded in this script.
 $destStorageAccountName = "<destination storage account name>"
 $destAccountKey = "<destination storage account key>"
 $destContainerName = "<destination blob container name>"
 
+# Create a service SAS token for the destination Storage Account container with write permissions.
 $destSasToken = Get-ServiceSasToken -storageAccountName $destStorageAccountName -storageAccountKey $destAccountKey `
   -containerName $destContainerName -signedPermissions "w"
 
@@ -97,6 +108,7 @@ $headers = @{
 $sourceUrl = "https://" + $sourceStorageAccountName + ".blob.core.windows.net/" + $sourceContainerName + `
   "?restype=container&comp=list&" + $sourceSasToken
 
+  # Get the list of blobs in the source container.
 $blobs = (Invoke-WebRequest $sourceUrl -Method "GET" -Headers $headers).Content
 
 # Remove special characters from the XML response.
@@ -104,6 +116,7 @@ $blobs = (Invoke-WebRequest $sourceUrl -Method "GET" -Headers $headers).Content
 
 $blobList = $xmlBlobs.EnumerationResults.Blobs.Blob.Name
 
+# Copy each blob from the source container to the destination container.
 foreach ($blob in $blobList)
 {
   Write-Host $blob
