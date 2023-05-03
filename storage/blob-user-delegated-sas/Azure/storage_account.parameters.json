@@ -1,0 +1,72 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "accessTier": {
+      "value": "Hot"
+    },
+    "allowAccessFromAllNetworks": {
+      "value": true
+    },
+    "allowBlobPublicAccess": {
+      "value": false
+    },
+    "allowBypassLogging": {
+      "value": false
+    },    
+    "allowBypassMetrics": {
+      "value": false
+    },    
+    "allowBypassTrustedServices": {
+      "value": false
+    },
+    "allowSharedKeyAccess": {
+      "value": false
+    },
+    "blobChangeFeed": {
+      "value": false
+    },
+    "blobSoftDelete": {
+      "value": false
+    },
+    "blobSoftDeleteRetentionInDays": {
+      "value": 0
+    },
+    "blobVersioning": {
+      "value": false
+    },
+    "containerSoftDelete": {
+      "value": false
+    },
+    "containerSoftDeleteRetentionInDays": {
+      "value": 0
+    },
+    "isHnsEnabled": {
+      "value": false
+    },
+    "isNfsV3Enabled": {
+      "value": false
+    },
+    "kind": {
+      "value": "StorageV2"
+    },
+    "minimumTlsVersion": {
+      "value": "TLS1_2"
+    },
+    "routingChoice": {
+      "value": "MicrosoftRouting"
+    },
+    "routingPublishMicrosoftEndpoints": {
+      "value": false
+    },
+    "routingPublishInternetEndpoints": {
+      "value": false
+    },
+    "skuName": {
+      "value": "Standard_LRS"
+    },
+    "supportsHttpsTrafficOnly": {
+      "value": true
+    }
+  }
+}
