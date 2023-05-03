@@ -1,0 +1,439 @@
+{
+	"info": {
+		"_postman_id": "aca6026f-2f76-4baf-bc36-8298a57d75db",
+		"name": "blob-sas Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19217459"
+	},
+	"item": [
+		{
+			"name": "Get User Delegation Key",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var moment = require('moment');\r",
+							"\r",
+							"pm.collectionVariables.set(\"currentDateTimeStart\", moment.utc().format(\"YYYY-MM-DDTHH:mm:00\") + \"Z\");\r",
+							"pm.collectionVariables.set(\"currentDateTimeEnd\", moment.utc().add(15, \"minutes\").format(\"YYYY-MM-DDTHH:mm:00\") + \"Z\")\r",
+							"\r",
+							"signRequest(pm, \"https://storage.azure.com/\");\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonResponse = xml2Json(responseBody);\r",
+							"\r",
+							"pm.collectionVariables.set(\"signedKeyObjectId\", jsonResponse.UserDelegationKey.SignedOid);\r",
+							"pm.collectionVariables.set(\"signedKeyTenantId\", jsonResponse.UserDelegationKey.SignedTid);\r",
+							"pm.collectionVariables.set(\"signedKeyStart\", jsonResponse.UserDelegationKey.SignedStart);\r",
+							"pm.collectionVariables.set(\"signedKeyExpiry\", jsonResponse.UserDelegationKey.SignedExpiry);\r",
+							"pm.collectionVariables.set(\"signedKeyService\", jsonResponse.UserDelegationKey.SignedService);\r",
+							"pm.collectionVariables.set(\"signedKeyVersion\", jsonResponse.UserDelegationKey.SignedVersion);\r",
+							"pm.collectionVariables.set(\"UserDelegationKey\", jsonResponse.UserDelegationKey.Value);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-ms-version",
+						"value": "2021-08-06",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"utf-8\"?>  \r\n<KeyInfo>  \r\n    <Start>{{currentDateTimeStart}}</Start>\r\n    <Expiry>{{currentDateTimeEnd}}</Expiry>\r\n</KeyInfo>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{storageAccountName}}.blob.core.windows.net/?restype=service&comp=userdelegationkey",
+					"protocol": "https",
+					"host": [
+						"{{storageAccountName}}",
+						"blob",
+						"core",
+						"windows",
+						"net"
+					],
+					"path": [
+						""
+					],
+					"query": [
+						{
+							"key": "restype",
+							"value": "service"
+						},
+						{
+							"key": "comp",
+							"value": "userdelegationkey"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get AAD Token",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "{{appId}}",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{appPassword}}",
+							"type": "text"
+						},
+						{
+							"key": "resource",
+							"value": "https://storage.azure.com/",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://login.microsoftonline.com/16b3c013-d300-468d-ac64-7eda0820b6d3/oauth2/token",
+					"protocol": "https",
+					"host": [
+						"login",
+						"microsoftonline",
+						"com"
+					],
+					"path": [
+						"16b3c013-d300-468d-ac64-7eda0820b6d3",
+						"oauth2",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Blob SAS Token",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var moment = require('moment');\r",
+							"\r",
+							"const signedPermissions = \"c\";\r",
+							"const signedStart = moment.utc().format(\"YYYY-MM-DDTHH:mm:00\") + \"Z\";\r",
+							"const signedExpiry = moment.utc().add(5, \"minutes\").format(\"YYYY-MM-DDTHH:mm:00\") + \"Z\"\r",
+							"const canonicalizedResource = \"/blob/\" + pm.collectionVariables.get(\"storageAccountName\") + \"/\" + pm.collectionVariables.get(\"containerName\") + \"/\" + pm.collectionVariables.get(\"blobName\");\r",
+							"const signedKeyObjectId = pm.collectionVariables.get(\"signedKeyObjectId\");\r",
+							"const signedKeyTenantId = pm.collectionVariables.get(\"signedKeyTenantId\");\r",
+							"const signedKeyStart = pm.collectionVariables.get(\"signedKeyStart\");\r",
+							"const signedKeyExpiry = pm.collectionVariables.get(\"signedKeyExpiry\");\r",
+							"const signedKeyService = pm.collectionVariables.get(\"signedKeyService\");\r",
+							"const signedKeyVersion = pm.collectionVariables.get(\"signedKeyVersion\");\r",
+							"const signedAuthorizedUserObjectId = \"\";\r",
+							"const signedUnauthorizedUserObjectId = \"\";\r",
+							"const signedCorrelationId = \"\";\r",
+							"const signedIP = \"\";\r",
+							"const signedProtocol = \"\";\r",
+							"const signedVersion = \"2021-10-04\";\r",
+							"const signedResource = \"b\";\r",
+							"const signedSnapshotTime = \"\";\r",
+							"const signedEncryptionScope = \"\";\r",
+							"const rscc = \"\";\r",
+							"const rscd = \"\";\r",
+							"const rsce = \"\";\r",
+							"const rscl = \"\";\r",
+							"const rsct = \"\";   \r",
+							"\r",
+							"const stringToSign = signedPermissions + \"\\n\" +\r",
+							"    signedStart + \"\\n\" +\r",
+							"    signedExpiry + \"\\n\" +\r",
+							"    canonicalizedResource + \"\\n\" +\r",
+							"    signedKeyObjectId + \"\\n\" +\r",
+							"    signedKeyTenantId + \"\\n\" +\r",
+							"    signedKeyStart + \"\\n\" +\r",
+							"    signedKeyExpiry  + \"\\n\" +\r",
+							"    signedKeyService + \"\\n\" +\r",
+							"    signedKeyVersion + \"\\n\" +\r",
+							"    signedAuthorizedUserObjectId + \"\\n\" +\r",
+							"    signedUnauthorizedUserObjectId + \"\\n\" +\r",
+							"    signedCorrelationId + \"\\n\" +\r",
+							"    signedIP + \"\\n\" +\r",
+							"    signedProtocol + \"\\n\" +\r",
+							"    signedVersion + \"\\n\" +\r",
+							"    signedResource + \"\\n\" +\r",
+							"    signedSnapshotTime + \"\\n\" +\r",
+							"    signedEncryptionScope + \"\\n\" +\r",
+							"    rscc + \"\\n\" +\r",
+							"    rscd + \"\\n\" +\r",
+							"    rsce + \"\\n\" +\r",
+							"    rscl + \"\\n\" +\r",
+							"    rsct;\r",
+							"\r",
+							"const key = CryptoJS.enc.Base64.parse(pm.collectionVariables.get(\"UserDelegationKey\"));\r",
+							"\r",
+							"var sig = CryptoJS.HmacSHA256(stringToSign, key).toString(CryptoJS.enc.Base64);\r",
+							"\r",
+							"var sasToken = \"?skoid=\" + signedKeyObjectId +\r",
+							"    \"&sktid=\" + signedKeyTenantId + \r",
+							"    \"&skt=\" + encodeURIComponent(signedKeyStart) +\r",
+							"    \"&ske=\" + encodeURIComponent(signedKeyExpiry) +\r",
+							"    \"&sks=\" + signedKeyService +\r",
+							"    \"&skv=\" + signedKeyVersion +\r",
+							"    \"&sv=2021-10-04\" + \r",
+							"    \"&st=\" + encodeURIComponent(signedStart) +\r",
+							"    \"&se=\" + encodeURIComponent(signedExpiry) +\r",
+							"    \"&sr=b\" +\r",
+							"    \"&sp=c\" +\r",
+							"    \"&sig=\" + encodeURIComponent(sig);\r",
+							"\r",
+							"pm.collectionVariables.set(\"opSasToken\", sasToken);\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-ms-blob-type",
+						"value": "BlockBlob",
+						"type": "text"
+					},
+					{
+						"key": "x-ms-version",
+						"value": "2021-10-04",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/octet-stream",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"type": "file",
+							"src": "/C:/Dev/Customer/CanadaLife/blob-sas/BlobConsole/BlobConsole/bin/Debug/net7.0/test.pdf"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://{{storageAccountName}}.blob.core.windows.net/{{containerName}}/{{blobName}}{{opSasToken}}",
+					"protocol": "https",
+					"host": [
+						"{{storageAccountName}}",
+						"blob",
+						"core",
+						"windows",
+						"net"
+					],
+					"path": [
+						"{{containerName}}",
+						"{{blobName}}{{opSasToken}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{bearerToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"signRequest = function(pm, resource) {",
+					"//    if (!pm.collectionVariables.get(\"bearerToken\") || Date.now() > new Date(pm.collectionVariables.get(\"bearerTokenExpiresOn\") * 1000)) {",
+					"        pm.sendRequest({",
+					"            url: 'https://login.microsoftonline.com/' + pm.collectionVariables.get(\"tenantId\") + '/oauth2/token',",
+					"            method: 'POST',",
+					"            header: 'Content-Type: application/x-www-form-urlencoded',",
+					"            body: {",
+					"                mode: 'urlencoded',",
+					"                urlencoded: [",
+					"                    { key: \"grant_type\", value: \"client_credentials\", disabled: false },",
+					"                    { key: \"client_id\", value: pm.collectionVariables.get(\"appId\"), disabled: false },",
+					"                    { key: \"client_secret\", value: pm.collectionVariables.get(\"appPassword\"), disabled: false },",
+					"                    { key: \"resource\", value: \"https://storage.azure.com/\", disabled: false }",
+					"                ]",
+					"            }    ",
+					"        }, function (err, res) {",
+					"            if (err) {",
+					"                console.log(err);",
+					"            } else {",
+					"                let resJson = res.json();",
+					"                pm.collectionVariables.set(\"bearerTokenExpiresOn\", resJson.expires_on);",
+					"                pm.collectionVariables.set(\"bearerToken\", resJson.access_token);",
+					"            }",
+					"        });",
+					"//    }",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "storageAccountName",
+			"value": "<name-of-storage-account>",
+			"type": "string"
+		},
+		{
+			"key": "tenantId",
+			"value": "<guid-of-tenant>",
+			"type": "string"
+		},
+		{
+			"key": "appId",
+			"value": "<client-id-of-sp>",
+			"type": "string"
+		},
+		{
+			"key": "appPassword",
+			"value": "<password-of-sp>",
+			"type": "string"
+		},
+		{
+			"key": "subscriptionId",
+			"value": "<guid-of-subscription>",
+			"type": "string"
+		},
+		{
+			"key": "resource",
+			"value": "https://management.azure.com/",
+			"type": "string"
+		},
+		{
+			"key": "currentDateTimeStart",
+			"value": ""
+		},
+		{
+			"key": "currentDateTimeEnd",
+			"value": ""
+		},
+		{
+			"key": "bearerTokenExpiresOn",
+			"value": ""
+		},
+		{
+			"key": "bearerToken",
+			"value": ""
+		},
+		{
+			"key": "sasToken",
+			"value": ""
+		},
+		{
+			"key": "opSasToken",
+			"value": ""
+		},
+		{
+			"key": "containerName",
+			"value": "files",
+			"type": "string"
+		},
+		{
+			"key": "blobName",
+			"value": "test.pdf",
+			"type": "string"
+		},
+		{
+			"key": "signedKeyObjectId",
+			"value": ""
+		},
+		{
+			"key": "signedKeyTenantId",
+			"value": ""
+		},
+		{
+			"key": "signedKeyStart",
+			"value": ""
+		},
+		{
+			"key": "signedKeyExpiry",
+			"value": ""
+		},
+		{
+			"key": "signedKeyService",
+			"value": ""
+		},
+		{
+			"key": "signedKeyVersion",
+			"value": ""
+		},
+		{
+			"key": "UserDelegationKey",
+			"value": ""
+		}
+	]
+}
