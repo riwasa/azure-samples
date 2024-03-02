@@ -1,0 +1,57 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "accessTier": {
+      "value": "Hot"
+    },
+    "allowBlobPublicAccess": {
+      "value": false
+    },
+    "allowCrossTenantReplication": {
+      "value": false
+    },
+    "allowSharedKeyAccess": {
+      "value": false
+    },
+    "defaultToOAuthAuthentication": {
+      "value": false
+    },
+    "dnsEndpointType": {
+      "value": "Standard"
+    },
+    "isHnsEnabled": {
+      "value": false
+    },
+    "isLocalUserEnabled": {
+      "value": false
+    },
+    "isNfsV3Enabled": {
+      "value": false
+    },
+    "isSftpEnabled": {
+      "value": false
+    },
+    "kind": {
+      "value": "StorageV2"
+    },
+    "minimumTlsVersion": {
+      "value": "TLS1_2"
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
+    },
+    "roleDefinitionIdsOrNames": {
+      "value": [
+        "Storage Account Contributor",
+        "ba92f5b4-2d11-453d-a403-e96b0029c9fe"
+      ]
+    },
+    "skuName": {
+      "value": "Standard_LRS"
+    },
+    "supportsHttpsTrafficOnly": {
+      "value": true
+    }
+  }
+}
